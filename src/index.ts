@@ -1,16 +1,20 @@
-import { runWasm } from './wasm';
+import { encodeWasm } from './to-base64-wasm';
+import { encode } from "./to-base64";
 
-const encodeBase64 = (image: HTMLImageElement): void => {
-  runWasm()
+const encodeBase64UseVanilla = (image: HTMLImageElement): void => {
+  const t0 = performance.now();
+  console.log(encode(image));
+  var t1 = performance.now();
+  console.log(`⏳"vanilla" processing time ${(t1 - t0)} milliseconds.`);
+}
+
+const encodeBase64UseWasm = (image: HTMLImageElement): void => {
+  encodeWasm()
     .then(({ run }) => {
-      if (image instanceof HTMLImageElement) {
-        const t0 = performance.now();
-        console.log(run(image));
-        var t1 = performance.now();
-        console.log(`⏳ processing time ${(t1 - t0)} milliseconds.`);
-      } else {
-        console.error('image is not HTMLImageElement');
-      }
+      const t0 = performance.now();
+      console.log(run(image));
+      var t1 = performance.now();
+      console.log(`⏳"wasm" processing time ${(t1 - t0)} milliseconds.`);
     })
     .catch(error => console.error(error));
 }
@@ -23,7 +27,19 @@ const onClickButton = (target: HTMLButtonElement): void => {
     return;
   }
 
-  encodeBase64(targetImage);
+  const type = target.dataset.encodeType;
+
+  switch (true) {
+    case type === "wasm":
+      encodeBase64UseWasm(targetImage);
+      break;
+    case type === "vanilla":
+      encodeBase64UseVanilla(targetImage);
+      break;
+    default:
+      console.error("type is undefined...😩");
+      break;
+  }
 }
 
 const onClick = ({ target }: MouseEvent): void => {
