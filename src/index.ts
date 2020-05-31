@@ -2,6 +2,7 @@ import { encodeWasm } from './to-base64-wasm';
 import { encode } from "./to-base64";
 
 const encodeBase64UseVanilla = (image: HTMLImageElement): void => {
+  console.log('run "vanilla" 🏃‍♂️');
   const t0 = performance.now();
   console.log(encode(image));
   var t1 = performance.now();
@@ -11,6 +12,7 @@ const encodeBase64UseVanilla = (image: HTMLImageElement): void => {
 const encodeBase64UseWasm = (image: HTMLImageElement): void => {
   encodeWasm()
     .then(({ run }) => {
+      console.log('run "wasm" 🏃‍♂️');
       const t0 = performance.now();
       console.log(run(image));
       var t1 = performance.now();
