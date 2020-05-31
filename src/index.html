@@ -40,10 +40,14 @@
     <section>
       <h1>Sample</h1>
 
-      <img id="image1" src="/assets/sample1.png" alt="">
+      <img id="image1" src="/assets/sample1.png" alt=""><br>
       
-      <button type="button" aria-controls="image1">
-        start
+      <button type="button" aria-controls="image1" data-encode-type="wasm">
+        encode (use wasm)
+      </button>
+
+      <button type="button" aria-controls="image1" data-encode-type="vanilla">
+        encode (use Vanilla JS)
       </button>
     </section>
   </main>
